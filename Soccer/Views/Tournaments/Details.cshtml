@@ -1,0 +1,29 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Soccer.Models.Tournament;
+
+<h3>Tournament Details</h3>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.TournamentName): @Html.DisplayFor(model => model.TournamentName)</h3>
+
+@if(@Model.JoinEntities.Count == 0)
+{
+  <p>This Tournament does not contain any Teams</p>
+}
+else
+{
+  <h4>Teams in this tournament are:</h4>
+  <ul>
+  @foreach(var join in Model.JoinEntities)
+  {
+    <li>@join.Team.Name</li>
+  }
+  </ul>
+}
+
+<!-- <p class="btn btn-dark">@Html.ActionLink("Add Department", "AddDepartment", new { id = Model.TournamentId })</p> -->
+<p class="btn btn-dark">@Html.ActionLink("Back to Tournaments", "Index")</p>
+<p class="btn btn-dark">@Html.ActionLink("Edit Course", "Edit", new { id = Model.TournamentId })</p>
+<p class="btn btn-dark">@Html.ActionLink("Delete Tournament", "Delete", new { id = Model.TournamentId })</p>

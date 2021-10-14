@@ -1,0 +1,14 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Soccer.Models.Tournament
+
+<h2>Are you sure you want to delete this?</h2>
+
+@Html.DisplayNameFor(model => model.TournamentName): @Html.DisplayFor(model => model.TournamentName)
+@using (Html.BeginForm())
+{
+  <input type="submit" value="Delete" class="btn btn-dark"/>
+}
+<p class="btn btn-dark">@Html.ActionLink("Back to Tournaments", "Index")</p>

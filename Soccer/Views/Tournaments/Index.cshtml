@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Soccer.Models;
+
+<h1>Tournaments</h1>
+
+@if (@Model.Count == 0)
+{
+  <h3>No tournaments have been added yet</h3>
+}
+
+<ul>
+@foreach(Tournament tournament in Model)
+{
+  <li>@Html.ActionLink($"{tournament.TournamentName}", "Details", new { id = tournament.TournamentId})</li>
+}
+</ul>
+<p class="btn btn-dark">@Html.ActionLink("Add New Tournament", "Create")</p>
+<p class="btn btn-dark">@Html.ActionLink("Home", "Index", "Home")</p>

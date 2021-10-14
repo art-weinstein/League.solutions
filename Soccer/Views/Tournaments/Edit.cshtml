@@ -1,0 +1,19 @@
+@{
+  Layout = "_Layout";
+}
+@model Soccer.Models.Tournament;
+<h3>Edit this tournament: @Html.DisplayFor(model => model.TournamentName)</h3>
+
+@using (Html.BeginForm())
+{
+  <div class="form-group">
+  @Html.HiddenFor(model => model.TournamentId)
+
+  <p>Course @Html.LabelFor(model => model.TournamentName)
+  @Html.EditorFor(model => model.TournamentName, new { @class = "form-control" })</p>
+  </div>
+
+  <input type="submit" value="Save" class="btn btn-dark"/>
+}
+<p class="btn btn-dark">@Html.ActionLink("Back to List", "Index")</p>
+

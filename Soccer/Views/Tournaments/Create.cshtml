@@ -1,0 +1,16 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Soccer.Models.Tournament
+
+<h3>Add a New Tournament</h3>
+<hr>
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.TournamentName)
+  @Html.TextBoxFor(model => model.TournamentName, new {@class = "form-control", @required= "required"})
+  <input type="submit" value="Add New Tournament" class="btn btn-dark"/>
+}
+<p class="btn btn-dark">@Html.ActionLink("Show all Tournaments", "Index")</p>
