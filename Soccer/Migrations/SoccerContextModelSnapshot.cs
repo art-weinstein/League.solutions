@@ -16,48 +16,13 @@ namespace Soccer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Soccer.Models.Player", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("PlayerId");
-
-                    b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("Soccer.Models.PlayerTeam", b =>
-                {
-                    b.Property<int>("PlayerTeamId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerTeamId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("PlayerTeam");
-                });
-
             modelBuilder.Entity("Soccer.Models.Team", b =>
                 {
                     b.Property<int>("TeamId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("TeamName")
+                    b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("TeamId");
@@ -65,31 +30,66 @@ namespace Soccer.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("Soccer.Models.PlayerTeam", b =>
+            modelBuilder.Entity("Soccer.Models.TeamTournament", b =>
                 {
-                    b.HasOne("Soccer.Models.Player", "Player")
-                        .WithMany("JoinEntities")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("TeamTournamentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamTournamentId");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.ToTable("TeamTournament");
+                });
+
+            modelBuilder.Entity("Soccer.Models.Tournament", b =>
+                {
+                    b.Property<int>("TournamentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("TournamentName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("TournamentId");
+
+                    b.ToTable("Tournaments");
+                });
+
+            modelBuilder.Entity("Soccer.Models.TeamTournament", b =>
+                {
                     b.HasOne("Soccer.Models.Team", "Team")
                         .WithMany("JoinEntities")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Player");
+                    b.HasOne("Soccer.Models.Tournament", "Tournament")
+                        .WithMany("JoinEntities")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Team");
+
+                    b.Navigation("Tournament");
                 });
 
-            modelBuilder.Entity("Soccer.Models.Player", b =>
+            modelBuilder.Entity("Soccer.Models.Team", b =>
                 {
                     b.Navigation("JoinEntities");
                 });
 
-            modelBuilder.Entity("Soccer.Models.Team", b =>
+            modelBuilder.Entity("Soccer.Models.Tournament", b =>
                 {
                     b.Navigation("JoinEntities");
                 });

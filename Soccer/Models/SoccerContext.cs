@@ -4,9 +4,9 @@ namespace Soccer.Models
 {
   public class SoccerContext : DbContext
   {
-    public virtual DbSet<Team> Teams { get; set; }
-    public DbSet<Player> Players { get; set; }
-    public DbSet<PlayerTeam> PlayerTeam { get; set; }
+    public virtual DbSet<Tournament> Tournaments { get; set; }
+    public DbSet<Team> Teams { get; set; }
+    public DbSet<TeamTournament> TeamTournament { get; set; }
 
     public SoccerContext(DbContextOptions options) : base(options) { }
 

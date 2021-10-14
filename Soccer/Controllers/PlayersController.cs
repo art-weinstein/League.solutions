@@ -7,34 +7,34 @@ using System.Linq;
 
 namespace Soccer.Controllers
 {
-  public class PlayersController : Controller
+  public class TeamsController : Controller
   {
     private readonly SoccerContext _db;
 
-    public PlayersController(SoccerContext db)
+    public TeamsController(SoccerContext db)
     {
       _db = db;
     }
 
     public ActionResult Index()
     {
-      return View(_db.Players.ToList());
+      return View(_db.Teams.ToList());
     }
 
     public ActionResult Create()
     {
-      ViewBag.TeamId = new SelectList(_db.Teams, "TeamId", "TeamName");
+      ViewBag.TournamentId = new SelectList(_db.Tournaments, "TournamentId", "TournamentName");
       return View();
     }
 
     [HttpPost]
-    public ActionResult Create(Player player, int TeamId)
+    public ActionResult Create(Team team, int TournamentId)
     {
-      _db.Players.Add(player);
+      _db.Teams.Add(team);
       _db.SaveChanges();
-      if (TeamId != 0)
+      if (TournamentId != 0)
       {
-        _db.PlayerTeam.Add(new PlayerTeam() {TeamId = TeamId, PlayerId = player.PlayerId});
+        _db.TeamTournament.Add(new TeamTournament() {TournamentId = TournamentId, TeamId = team.TeamId});
         // _db.StudentCourse.Add(new StudentCourse() { CourseId = CourseId, StudentId = student.StudentId });
       }
       _db.SaveChanges();
@@ -43,45 +43,45 @@ namespace Soccer.Controllers
 
     public ActionResult Details(int id)
     {
-      var thisPlayer = _db.Players
-      .Include(player => player.JoinEntities)
-      .ThenInclude(join => join.Team)
-      .FirstOrDefault(player => player.PlayerId == id);
-      return View(thisPlayer);
+      var thisTeam = _db.Teams
+      .Include(team => team.JoinEntities)
+      .ThenInclude(join => join.Tournament)
+      .FirstOrDefault(team => team.TeamId == id);
+      return View(thisTeam);
     }
 
     public ActionResult Edit(int id)
     {
-      var thisPlayer = _db.Players.FirstOrDefault(player => player.PlayerId == id);
-      ViewBag.TeamId = new SelectList(_db.Teams, "TeamId", "TeamName");
-      return View(thisPlayer);
+      var thisTeam = _db.Teams.FirstOrDefault(team => team.TeamId == id);
+      ViewBag.TournamentId = new SelectList(_db.Tournaments, "TournamentId", "TournamentName");
+      return View(thisTeam);
     }
 
     [HttpPost]
-    public ActionResult Edit(Player player, int TeamId)
+    public ActionResult Edit(Team team, int TournamentId)
     {
-      if (TeamId != 0)
+      if (TournamentId != 0)
       {
-        _db.PlayerTeam.Add(new PlayerTeam() { TeamId = TeamId, PlayerId = player.PlayerId });
+        _db.TeamTournament.Add(new TeamTournament() { TournamentId = TournamentId, TeamId = team.TeamId });
       }
-      _db.Entry(player).State = EntityState.Modified;
+      _db.Entry(team).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
-    public ActionResult AddTeam(int id)
+    public ActionResult AddTournament(int id)
     {
-      var thisPlayer = _db.Players.FirstOrDefault(player => player.PlayerId == id);
-      ViewBag.TeamId = new SelectList(_db.Teams, "TeamId", "TeamName");
-      return View(thisPlayer);
+      var thisTeam = _db.Teams.FirstOrDefault(team => team.TeamId == id);
+      ViewBag.TournamentId = new SelectList(_db.Tournaments, "TournamentId", "TournamentName");
+      return View(thisTeam);
     }
 
     [HttpPost]
-    public ActionResult AddTEam(Player player, int TeamId)
+    public ActionResult AddTournament(Team team, int TournamentId)
     {
-      if (TeamId != 0)
+      if (TournamentId != 0)
       {
-      _db.PlayerTeam.Add(new PlayerTeam() { TeamId = TeamId, PlayerId = player.PlayerId });
+      _db.TeamTournament.Add(new TeamTournament() { TournamentId = TournamentId, TeamId = team.TeamId });
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -89,24 +89,24 @@ namespace Soccer.Controllers
 
     public ActionResult Delete(int id)
     {
-      var thisPlayer = _db.Players.FirstOrDefault(player => player.PlayerId == id);
-      return View(thisPlayer);
+      var thisTeam = _db.Teams.FirstOrDefault(team => team.TeamId == id);
+      return View(thisTeam);
     }
 
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
-      var thisPlayer = _db.Players.FirstOrDefault(player => player.PlayerId == id);
-      _db.Players.Remove(thisPlayer);
+      var thisTeam = _db.Teams.FirstOrDefault(team => team.TeamId == id);
+      _db.Teams.Remove(thisTeam);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     [HttpPost]
-    public ActionResult DeleteTeam(int joinId)
+    public ActionResult DeleteTournament(int joinId)
     {
-      var joinEntry = _db.PlayerTeam.FirstOrDefault(entry => entry.PlayerTeamId == joinId);
-      _db.PlayerTeam.Remove(joinEntry);
+      var joinEntry = _db.TeamTournament.FirstOrDefault(entry => entry.TeamTournamentId == joinId);
+      _db.TeamTournament.Remove(joinEntry);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

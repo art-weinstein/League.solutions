@@ -6,18 +6,18 @@ using System.Linq;
 
 namespace Soccer.Controllers
 {
-  public class TeamsController : Controller
+  public class TournamentsController : Controller
   {
     private readonly SoccerContext _db;
 
-    public TeamsController(SoccerContext db)
+    public TournamentsController(SoccerContext db)
     {
       _db = db;
     }
 
     public ActionResult Index()
     {
-      List<Team> model = _db.Teams.ToList();
+      List<Tournament> model = _db.Tournaments.ToList();
       return View(model);
     }
 
@@ -27,41 +27,41 @@ namespace Soccer.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Team team)
+    public ActionResult Create(Tournament tournament)
     {
-      _db.Teams.Add(team);
+      _db.Tournaments.Add(tournament);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Details(int id)
     {
-      var thisTeam = _db.Teams
-        .Include(team => team.JoinEntities)
-        .ThenInclude(join => join.Player)
-        .FirstOrDefault(team => team.TeamId == id);
-      return View(thisTeam);
+      var thisTournament = _db.Tournaments
+        .Include(tournament => tournament.JoinEntities)
+        .ThenInclude(join => join.Team)
+        .FirstOrDefault(tournament => tournament.TournamentId == id);
+      return View(thisTournament);
     }
 
     [HttpPost]
-    public ActionResult Edit(Team team)
+    public ActionResult Edit(Tournament tournament)
     {
-      _db.Entry(team).State = EntityState.Modified;
+      _db.Entry(tournament).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Delete(int id)
     {
-      var thisTeam = _db.Teams.FirstOrDefault(team => team.TeamId == id);
-      return View(thisTeam);
+      var thisTournament = _db.Tournaments.FirstOrDefault(tournament => tournament.TournamentId == id);
+      return View(thisTournament);
     }
     [HttpPost, ActionName("Delete")]
 
     public ActionResult DeleteConfirmed(int id)
     {
-      var thisTeam = _db.Teams.FirstOrDefault(team => team.TeamId == id);
-      _db.Teams.Remove(thisTeam);
+      var thisTournament = _db.Tournaments.FirstOrDefault(tournament => tournament.TournamentId == id);
+      _db.Tournaments.Remove(thisTournament);
       _db.SaveChanges();
       return RedirectToAction("Index");
     }

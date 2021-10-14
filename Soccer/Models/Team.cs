@@ -6,11 +6,12 @@ namespace Soccer.Models
   {
     public Team()
     {
-      this.JoinEntities = new HashSet<PlayerTeam>();
+        this.JoinEntities = new HashSet<TeamTournament>();
+        
     }
 
     public int TeamId { get; set; }
-    public string TeamName { get; set; }
-    public virtual ICollection<PlayerTeam> JoinEntities { get; set; }
+    public string Name { get; set; }
+    public virtual ICollection<TeamTournament> JoinEntities { get; }
   }
 }

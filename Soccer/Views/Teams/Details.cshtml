@@ -1,0 +1,28 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Soccer.Models.Team
+
+<div class = "jumbotron jumbotron-fluid">
+  <h1>Team Details</h1>
+</div>
+
+<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
+@if(Model.JoinEntities.Count == 0)
+{
+  <p class="border border-danger">This team is not in a tournament</p>
+}
+
+else
+{
+  <h3>This team belongs:</h3>
+  <ul>
+    @foreach(var join in Model.JoinEntities)
+    {
+      <li>@join.Tournament.TournamentName</li>
+    }
+  </ul>
+}
+
+<p></p>

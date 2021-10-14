@@ -8,25 +8,12 @@ namespace Soccer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Players",
-                columns: table => new
-                {
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Players", x => x.PlayerId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
                 {
                     TeamId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TeamName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,52 +21,65 @@ namespace Soccer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlayerTeam",
+                name: "Tournaments",
                 columns: table => new
                 {
-                    PlayerTeamId = table.Column<int>(type: "int", nullable: false)
+                    TournamentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    TeamId = table.Column<int>(type: "int", nullable: false)
+                    TournamentName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerTeam", x => x.PlayerTeamId);
+                    table.PrimaryKey("PK_Tournaments", x => x.TournamentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamTournament",
+                columns: table => new
+                {
+                    TeamTournamentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TeamId = table.Column<int>(type: "int", nullable: false),
+                    TournamentId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamTournament", x => x.TeamTournamentId);
                     table.ForeignKey(
-                        name: "FK_PlayerTeam_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerTeam_Teams_TeamId",
+                        name: "FK_TeamTournament_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamTournament_Tournaments_TournamentId",
+                        column: x => x.TournamentId,
+                        principalTable: "Tournaments",
+                        principalColumn: "TournamentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerTeam_PlayerId",
-                table: "PlayerTeam",
-                column: "PlayerId");
+                name: "IX_TeamTournament_TeamId",
+                table: "TeamTournament",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerTeam_TeamId",
-                table: "PlayerTeam",
-                column: "TeamId");
+                name: "IX_TeamTournament_TournamentId",
+                table: "TeamTournament",
+                column: "TournamentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PlayerTeam");
-
-            migrationBuilder.DropTable(
-                name: "Players");
+                name: "TeamTournament");
 
             migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Tournaments");
         }
     }
 }
