@@ -1,0 +1,24 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Soccer.Models.Team
+
+<h2>Edit Team Page</h2>
+
+<h4>Edit this team</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model=>model.TeamId)
+
+  @Html.LabelFor(model=>model.Name)
+  @Html.EditorFor(model=>model.Name)
+
+
+  <input type="submit" value="Save" />
+}
+
+<p>@Html.ActionLink("Back to teams", "Index")</p>
+<p>@Html.ActionLink("Back to Tournaments", "Index", "Tournaments")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
